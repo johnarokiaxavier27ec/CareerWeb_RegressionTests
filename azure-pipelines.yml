@@ -1,7 +1,9 @@
-	trigger:
-  - main
+trigger:
+- main
+
 pool:
   vmImage: ubuntu-latest
+
 resources:
   containers:
     - container: mysql
@@ -13,8 +15,10 @@ resources:
         MYSQL_DATABASE: careerweb
         MYSQL_USER: careerweb_user
         MYSQL_PASSWORD: careerweb_pass
+
 services:
   mysql: mysql
+
 steps:
   - script: |
       for i in $(seq 1 30); do
@@ -23,6 +27,7 @@ steps:
       done
       echo "MySQL did not start" && exit 1
     displayName: Wait for MySQL
+
   - task: Maven@4
     displayName: Maven clean package
     inputs:
