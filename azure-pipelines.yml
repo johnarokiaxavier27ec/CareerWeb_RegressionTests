@@ -1,5 +1,5 @@
 trigger:
-- main
+  - main
 
 pool:
   vmImage: ubuntu-latest
@@ -41,3 +41,10 @@ steps:
       SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/careerweb
       SPRING_DATASOURCE_USERNAME: careerweb_user
       SPRING_DATASOURCE_PASSWORD: careerweb_pass
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Spring Boot JAR Artifact'
+    inputs:
+      targetPath: '$(System.DefaultWorkingDirectory)/target/'
+      artifact: 'SpringBootApp'
+      publishLocation: 'pipeline'
