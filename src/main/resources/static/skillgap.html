@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerWeb - Skill Gap Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+        }
+        .nav {
+            background-color: #1a237e;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .nav-links a {
+            color: #c5cae9;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            font-weight: normal;
+        }
+        .nav-links a:hover { color: white; }
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        h2 { color: #333; }
+        .form-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #333;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .hint {
+            color: #999;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background-color: #1a237e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #0d1642; }
+        .result {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            display: none;
+        }
+        .match-bar {
+            background: #e0e0e0;
+            border-radius: 4px;
+            height: 30px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .match-fill {
+            background: #43a047;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            transition: width 0.5s;
+        }
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .skill-tag {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 13px;
+        }
+        .skill-matched {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+        .skill-missing {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+        .info-box {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .info-box strong { color: #1565c0; }
+        h3 { color: #333; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="nav">
+        <a href="/dashboard.html">CareerWeb</a>
+        <div class="nav-links">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/resume.html">Resume</a>
+            <a href="/skillgap.html">Skill Gap</a>
+            <a href="/tracker.html">Tracker</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Skill Gap Analysis</h2>
+        <p style="color:#666;">Select a target role and enter your current skills to see what's missing.</p>
+
+        <div class="form-section">
+            <form id="skillForm">
+                <label>Target Role</label>
+                <select name="targetRole" id="targetRole">
+                    <option value="Microsoft SDE">Microsoft SDE</option>
+                    <option value="Google SDE">Google SDE</option>
+                    <option value="Amazon SDE">Amazon SDE</option>
+                    <option value="TCS Digital">TCS Digital</option>
+                    <option value="Infosys Power Programmer">Infosys Power Programmer</option>
+                    <option value="Wipro Elite">Wipro Elite</option>
+                </select>
+
+                <label>Your Current Skills</label>
+                <div class="hint">Comma-separated (e.g., Java, SQL, OOP, Git)</div>
+                <input type="text" name="currentSkills" id="currentSkills" required>
+
+                <button type="submit">Analyze Gap</button>
+            </form>
+        </div>
+
+        <div class="result" id="resultSection">
+            <h3>Results for: <span id="roleName"></span></h3>
+
+            <div class="match-bar">
+                <div class="match-fill" id="matchBar">0%</div>
+            </div>
+
+            <h3>Matched Skills</h3>
+            <div class="skill-list" id="matchedSkills"></div>
+
+            <h3>Missing Skills</h3>
+            <div class="skill-list" id="missingSkills"></div>
+
+            <div class="info-box">
+                <strong>Estimated Learning Time:</strong> <span id="estimatedTime">--</span> weeks
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('skillForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            var formData = new URLSearchParams();
+            formData.append('targetRole', document.getElementById('targetRole').value);
+            formData.append('currentSkills', document.getElementById('currentSkills').value);
+
+            fetch('/api/skillgap/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                document.getElementById('roleName').textContent = data.targetRole;
+
+                var bar = document.getElementById('matchBar');
+                bar.style.width = data.matchPercent + '%';
+                bar.textContent = data.matchPercent + '% Match';
+
+                var matchedDiv = document.getElementById('matchedSkills');
+                matchedDiv.innerHTML = '';
+                data.matchedSkills.forEach(function(s) {
+                    var span = document.createElement('span');
+                    span.className = 'skill-tag skill-matched';
+                    span.textContent = s;
+                    matchedDiv.appendChild(span);
+                });
+
+                var missingDiv = document.getElementById('missingSkills');
+                missingDiv.innerHTML = '';
+                data.missingSkills.forEach(function(s) {
+                    var span = document.createElement('span');
+                    span.className = 'skill-tag skill-missing';
+                    span.textContent = s;
+                    missingDiv.appendChild(span);
+                });
+
+                document.getElementById('estimatedTime').textContent = data.estimatedWeeks;
+                document.getElementById('resultSection').style.display = 'block';
+            })
+            .catch(err => alert('Error analyzing skill gap'));
+        });
+    </script>
+
+</body>
+</html>

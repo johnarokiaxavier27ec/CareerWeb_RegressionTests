@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerWeb - Application Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+        }
+
+        .nav {
+            background-color: #1a237e;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .nav-links a {
+            color: #c5cae9;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .form-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 13px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #1a237e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #0d1642;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #f5f5f5;
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 13px;
+            color: #333;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        td {
+            padding: 10px;
+            font-size: 13px;
+            color: #555;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .status-badge {
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-Applied {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .status-Interview {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .status-Offered {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-Rejected {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .btn-delete {
+            background: #ef5350;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-delete:hover {
+            background: #c62828;
+        }
+
+        .empty-msg {
+            text-align: center;
+            color: #999;
+            padding: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="nav">
+        <a href="/dashboard.html">CareerWeb</a>
+        <div class="nav-links">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/resume.html">Resume</a>
+            <a href="/skillgap.html">Skill Gap</a>
+            <a href="/tracker.html">Tracker</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Application Tracker</h2>
+
+        <div class="form-section">
+            <form id="addForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Company</label>
+                        <input type="text" name="companyName" id="companyName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <input type="text" name="role" id="role" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" id="status">
+                            <option value="Applied">Applied</option>
+                            <option value="Interview">Interview</option>
+                            <option value="Offered">Offered</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Applied Date</label>
+                        <input type="date" name="appliedDate" id="appliedDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Interview Date</label>
+                        <input type="date" name="interviewDate" id="interviewDate">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Applied</th>
+                    <th>Interview</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="appTableBody">
+                <tr>
+                    <td colspan="6" class="empty-msg">No applications yet. Add your first one above.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function loadApplications() {
+            fetch('/api/applications')
+                .then(res => res.json())
+                .then(data => {
+                    var tbody = document.getElementById('appTableBody');
+                    if (data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" class="empty-msg">No applications yet. Add your first one above.</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = '';
+                    data.forEach(function (app) {
+                        var tr = document.createElement('tr');
+                        tr.innerHTML =
+                            '<td>' + app.companyName + '</td>' +
+                            '<td>' + app.role + '</td>' +
+                            '<td><span class="status-badge status-' + app.status + '">' + app.status + '</span></td>' +
+                            '<td>' + app.appliedDate + '</td>' +
+                            '<td>' + (app.interviewDate || '-') + '</td>' +
+                            '<td><button class="btn-delete" onclick="deleteApp(' + app.id + ')">Delete</button></td>';
+                        tbody.appendChild(tr);
+                    });
+                });
+        }
+
+        document.getElementById('addForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var formData = new URLSearchParams();
+            formData.append('companyName', document.getElementById('companyName').value);
+            formData.append('role', document.getElementById('role').value);
+            formData.append('status', document.getElementById('status').value);
+            formData.append('appliedDate', document.getElementById('appliedDate').value);
+            formData.append('interviewDate', document.getElementById('interviewDate').value);
+            formData.append('notes', '');
+
+            fetch('/api/applications', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+                    document.getElementById('addForm').reset();
+                    loadApplications();
+                });
+        });
+
+        function deleteApp(id) {
+            if (!confirm('Delete this application?')) return;
+            fetch('/api/applications/' + id, { method: 'DELETE' })
+                .then(res => res.json())
+                .then(() => loadApplications());
+        }
+
+        loadApplications();
+    </script>
+
+</body>
+
+</html>

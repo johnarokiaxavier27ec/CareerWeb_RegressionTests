@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerWeb - Resume Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+        }
+        .nav {
+            background-color: #1a237e;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .nav-links a {
+            color: #c5cae9;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            font-weight: normal;
+        }
+        .nav-links a:hover { color: white; }
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        h2 { color: #333; }
+        .form-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #333;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .hint {
+            color: #999;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+        textarea { height: 80px; resize: vertical; }
+        button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background-color: #1a237e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #0d1642; }
+        .result {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            display: none;
+        }
+        .score-box {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .score-box .score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+        .score-box .label {
+            color: #666;
+            font-size: 14px;
+        }
+        .suggestions {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        .suggestions h3 {
+            margin-top: 0;
+            color: #f57f17;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav">
+        <a href="/dashboard.html">CareerWeb</a>
+        <div class="nav-links">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/resume.html">Resume</a>
+            <a href="/skillgap.html">Skill Gap</a>
+            <a href="/tracker.html">Tracker</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Resume Analyzer</h2>
+        <p style="color:#666;">Enter your resume details below to get an ATS score and improvement suggestions.</p>
+
+        <div class="form-section">
+            <form id="resumeForm">
+                <label>Skills</label>
+                <div class="hint">Comma-separated (e.g., Java, Python, SQL, Spring Boot, Docker)</div>
+                <input type="text" name="skills" id="skills" required>
+
+                <label>Education</label>
+                <div class="hint">Degree, university, year (e.g., B.Tech CSE, XYZ University, 2024)</div>
+                <textarea name="education" id="education" required></textarea>
+
+                <label>Experience / Projects</label>
+                <div class="hint">Describe your work experience or projects with details</div>
+                <textarea name="experience" id="experience" required></textarea>
+
+                <button type="submit">Analyze Resume</button>
+            </form>
+        </div>
+
+        <div class="result" id="resultSection">
+            <div class="score-box">
+                <div class="label">YOUR ATS SCORE</div>
+                <div class="score" id="scoreValue">--</div>
+            </div>
+
+            <div class="suggestions" id="suggestionsBox">
+                <h3>Suggestions</h3>
+                <p id="suggestionsText"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('resumeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            var formData = new URLSearchParams();
+            formData.append('skills', document.getElementById('skills').value);
+            formData.append('education', document.getElementById('education').value);
+            formData.append('experience', document.getElementById('experience').value);
+
+            fetch('/api/resume/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                document.getElementById('scoreValue').textContent = data.atsScore + '/100';
+                document.getElementById('suggestionsText').textContent = data.suggestions || 'Your resume looks good!';
+                document.getElementById('resultSection').style.display = 'block';
+            })
+            .catch(err => alert('Error analyzing resume'));
+        });
+    </script>
+
+</body>
+</html>

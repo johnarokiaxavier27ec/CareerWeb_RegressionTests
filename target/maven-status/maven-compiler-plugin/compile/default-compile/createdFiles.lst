@@ -1,0 +1,16 @@
+com\example\webapp\repository\ResumeRepository.class
+com\example\webapp\controller\ResumeController.class
+com\example\webapp\domain\JobApplication.class
+com\example\webapp\controller\LoginController.class
+com\example\webapp\domain\Resume.class
+com\example\webapp\repository\StudentRepository.class
+com\example\webapp\controller\RegisterController.class
+com\example\webapp\repository\UserRepository.class
+com\example\webapp\controller\DashboardController.class
+com\example\webapp\domain\Student.class
+com\example\webapp\controller\ApplicationTrackerController.class
+com\example\webapp\controller\UserController.class
+com\example\webapp\WebappApplication.class
+com\example\webapp\controller\SkillGapController.class
+com\example\webapp\User.class
+com\example\webapp\repository\JobApplicationRepository.class

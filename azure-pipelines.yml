@@ -1,0 +1,38 @@
+	trigger:
+  - main
+pool:
+  vmImage: ubuntu-latest
+resources:
+  containers:
+    - container: mysql
+      image: mysql:8.0
+      ports:
+        - 3306:3306
+      env:
+        MYSQL_ROOT_PASSWORD: rootpass
+        MYSQL_DATABASE: careerweb
+        MYSQL_USER: careerweb_user
+        MYSQL_PASSWORD: careerweb_pass
+services:
+  mysql: mysql
+steps:
+  - script: |
+      for i in $(seq 1 30); do
+        (echo > /dev/tcp/127.0.0.1/3306) >/dev/null 2>&1 && exit 0
+        sleep 2
+      done
+      echo "MySQL did not start" && exit 1
+    displayName: Wait for MySQL
+  - task: Maven@4
+    displayName: Maven clean package
+    inputs:
+      mavenPomFile: pom.xml
+      goals: clean package
+      javaHomeOption: JDKVersion
+      jdkVersionOption: '1.21'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    env:
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/careerweb
+      SPRING_DATASOURCE_USERNAME: careerweb_user
+      SPRING_DATASOURCE_PASSWORD: careerweb_pass

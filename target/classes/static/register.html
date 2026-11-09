@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerWeb - Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        .nav {
+            background-color: #1a237e;
+            padding: 15px 30px;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 450px;
+            margin: 60px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        h2 {
+            color: #1a237e;
+            margin-top: 0;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #333;
+            font-size: 14px;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input[type="submit"] {
+            margin-top: 25px;
+            padding: 12px 30px;
+            background-color: #1a237e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        input[type="submit"]:hover {
+            background-color: #0d1642;
+        }
+        .link {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .link a {
+            color: #1a237e;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/index.html">CareerWeb</a>
+    </div>
+
+    <div class="container">
+        <h2>Create Your Account</h2>
+        <form action="/signup" method="post">
+            <label>Full Name:</label>
+            <input type="text" name="studentname" required>
+
+            <label>Email:</label>
+            <input type="email" name="email" required>
+
+            <label>Password:</label>
+            <input type="password" name="password" required>
+
+            <label>College / Organization:</label>
+            <input type="text" name="college" required>
+
+            <label>Target Role (e.g., SDE, Data Analyst):</label>
+            <input type="text" name="targetRole">
+
+            <input type="submit" value="Sign Up">
+        </form>
+        <div class="link">
+            Already have an account? <a href="/signin">Sign In</a>
+        </div>
+    </div>
+</body>
+</html>

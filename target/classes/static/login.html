@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerWeb - Sign In</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        .nav {
+            background-color: #1a237e;
+            padding: 15px 30px;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 400px;
+            margin: 80px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        h2 {
+            color: #1a237e;
+            margin-top: 0;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #333;
+            font-size: 14px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input[type="submit"] {
+            margin-top: 25px;
+            padding: 12px 30px;
+            background-color: #1a237e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        input[type="submit"]:hover {
+            background-color: #0d1642;
+        }
+        .link {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .link a {
+            color: #1a237e;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/index.html">CareerWeb</a>
+    </div>
+
+    <div class="container">
+        <h2>Sign In</h2>
+        <form action="/signin" method="post">
+            <label>Username:</label>
+            <input type="text" name="studentname" required>
+
+            <label>Password:</label>
+            <input type="password" name="password" required>
+
+            <input type="submit" value="Sign In">
+        </form>
+        <div class="link">
+            Don't have an account? <a href="/signup">Sign Up</a>
+        </div>
+    </div>
+</body>
+</html>

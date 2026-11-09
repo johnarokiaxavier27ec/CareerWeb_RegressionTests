@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerWeb - Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+        }
+        .nav {
+            background-color: #1a237e;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .nav-links a {
+            color: #c5cae9;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            font-weight: normal;
+        }
+        .nav-links a:hover {
+            color: white;
+        }
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            margin: 0;
+            color: #666;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1a237e;
+            margin: 10px 0 0;
+        }
+        .modules {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .module-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            flex: 1;
+            min-width: 200px;
+            text-decoration: none;
+            color: inherit;
+        }
+        .module-card:hover {
+            border-color: #1a237e;
+        }
+        .module-card h3 {
+            color: #1a237e;
+            margin-top: 0;
+        }
+        .module-card p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav">
+        <a href="/dashboard.html">CareerWeb</a>
+        <div class="nav-links">
+            <a href="/resume.html">Resume</a>
+            <a href="/skillgap.html">Skill Gap</a>
+            <a href="/tracker.html">Tracker</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 id="welcome-msg">Welcome to your Dashboard</h2>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Readiness Score</h3>
+                <div class="value" id="readiness">--</div>
+            </div>
+            <div class="stat-card">
+                <h3>ATS Score</h3>
+                <div class="value" id="atsScore">--</div>
+            </div>
+            <div class="stat-card">
+                <h3>Applied</h3>
+                <div class="value" id="totalApplied">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Interviews</h3>
+                <div class="value" id="interviews">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Offers</h3>
+                <div class="value" id="offers">0</div>
+            </div>
+        </div>
+
+        <h2>Modules</h2>
+        <div class="modules">
+            <a href="/resume.html" class="module-card">
+                <h3>&#128196; Resume Analyzer</h3>
+                <p>Enter your skills, education, and experience to get an ATS score and improvement suggestions.</p>
+            </a>
+            <a href="/skillgap.html" class="module-card">
+                <h3>&#127919; Skill Gap Analysis</h3>
+                <p>Compare your skills against target company requirements and find what's missing.</p>
+            </a>
+            <a href="/tracker.html" class="module-card">
+                <h3>&#128203; Application Tracker</h3>
+                <p>Track your job applications, interview dates, and offer status.</p>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        fetch('/api/dashboard')
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    window.location.href = '/signin';
+                    return;
+                }
+                document.getElementById('welcome-msg').textContent = 'Welcome, ' + data.studentname;
+                document.getElementById('readiness').textContent = data.readinessScore + '%';
+                document.getElementById('atsScore').textContent = data.atsScore;
+                document.getElementById('totalApplied').textContent = data.totalApplied;
+                document.getElementById('interviews').textContent = data.interviews;
+                document.getElementById('offers').textContent = data.offers;
+            })
+            .catch(() => {});
+    </script>
+
+</body>
+</html>
